@@ -16,13 +16,13 @@ title_label.pack(side=tk.TOP,fill=tk.X)
 
 # for details frame 
 
-detail_frame = tk.LabelFrame(win,text="Enter Details",font=("Arial",20,BOLD),bd=12,relief=tk.GROOVE)
+detail_frame = tk.LabelFrame(win,text="Details",font=("Arial",20,BOLD),bd=12,relief=tk.GROOVE)
 detail_frame.place(x=20,y=80,width=420,height=500)
 
 # for data frame 
 
 data_frame = tk.LabelFrame(win,text="Data",font=("Arial",20,BOLD),bd=12,relief=tk.GROOVE)
-data_frame.place(x=500,y=80,width=700,height=500)
+data_frame.place(x=470,y=80,width=700,height=500)
 
 
 # for input fields 
@@ -87,17 +87,23 @@ clear_btn.grid(row=0,column=3,padx=2,pady=2)
 
 
 #  for search frame 
-# btn_frame = tk.Frame(detail_frame,relief=tk.GROOVE)
-# btn_frame.place(x=15,y=380,width=350,height=50)
-# search_frame = tk.Frame(data_frame,relief=tk.GROOVE)
-# search_frame.place(x=10,y=10,width=100,height=100)
 search_frame = tk.Frame(data_frame,bd=6,relief=tk.GROOVE)
-search_frame.place(x=20,y=10,width=600,height=100)
+search_frame.pack(side=tk.TOP,fill=tk.X) 
 
-search_label = tk.Label(search_frame,text="Search",font=("Arial",15,BOLD),width=8)
+search_label = tk.Label(search_frame,text="Search",font=("Arial",12,BOLD),width=8)
 search_label.grid(row=0,column=0,padx=5,pady=5)
 search_by = ttk.Combobox(search_frame,font=("Arial",10) , state="readonly")
 search_by["values"] = ("Roll No","Name","Father Name","Email")
-search_by.grid(row=0,column=1,padx=5,pady=5)
+search_by.grid(row=0,column=1,padx=1,pady=1)
+search_btn = tk.Button(search_frame,text="Search", bd = 5, font=("Arial",12,BOLD),width=8)
+search_btn.grid(row=0,column=2,padx=1,pady=1)
+
+allData_btn = tk.Button(search_frame,text="All Students" , bd = 5 ,font=("Arial",12,BOLD),width=10)
+allData_btn.grid(row=0,column=3,padx=1,pady=1)
+
+# for data view frame 
+
+data_view = tk.Frame(data_frame,bg="lightgray",bd=10 , relief=tk.GROOVE)
+data_view.pack(fill=tk.BOTH,expand=True)
 
 win.mainloop()
