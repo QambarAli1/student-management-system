@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import font
-from tkinter.constants import GROOVE
+from tkinter.constants import GROOVE, RIGHT
 from tkinter.font import BOLD
 from typing import Text
 
@@ -24,48 +24,58 @@ detail_frame.place(x=20,y=80,width=420,height=500)
 data_frame = tk.LabelFrame(win,text="Data",font=("Arial",20,BOLD),bd=12,relief=tk.GROOVE)
 data_frame.place(x=470,y=80,width=700,height=500)
 
+#*****Inp Variables *****
+rollno = tk.StringVar()
+name = tk.StringVar()
+fathername = tk.StringVar()
+gender = tk.StringVar()
+email = tk.StringVar()
+department= tk.StringVar()
+semester = tk.StringVar()
+section = tk.StringVar()
+
 
 # for input fields 
 
 rollno_label = tk.Label(detail_frame,text="Roll No",font=("Arial",10),width=13)
 rollno_label.grid(row=0,column=0,padx=10,pady=8)
-rollno_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28)
+rollno_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 ,textvariable=rollno)
 rollno_entry.grid(row=0,column=1,padx=10,pady=8)
 
 name_label = tk.Label(detail_frame,text="Name",font=("Arial",10),width=13)
 name_label.grid(row=1,column=0,padx=10,pady=8)
-name_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28)
+name_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 ,textvariable=name)
 name_entry.grid(row=1,column=1,padx=10,pady=8)
 
 fathername_label = tk.Label(detail_frame,text="Father Name",font=("Arial",10),width=13)
 fathername_label.grid(row=2,column=0,padx=10,pady=8)
-fathername_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28)
+fathername_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , textvariable=fathername)
 fathername_entry.grid(row=2,column=1,padx=10,pady=8)
 
 gender_label = tk.Label(detail_frame,text="Gender",font=("Arial",10),width=13)
 gender_label.grid(row=3,column=0,padx=10,pady=8)
-gender_entry = ttk.Combobox(detail_frame,font=("Arial",10),width=28,state="readonly")
+gender_entry = ttk.Combobox(detail_frame,font=("Arial",10),width=28,state="readonly",textvariable=gender)
 gender_entry['values'] = ("Male", "Female")
 gender_entry.grid(row=3,column=1,padx=10,pady=8)
 
 email_label = tk.Label(detail_frame,text="Email",font=("Arial",10),width=13)
 email_label.grid(row=4,column=0,padx=10,pady=8)
-email_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28)
+email_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 , textvariable=email)
 email_entry.grid(row=4,column=1,padx=10,pady=8)
 
 department_label = tk.Label(detail_frame,text="Department",font=("Arial",10),width=13)
 department_label.grid(row=5,column=0,padx=10,pady=8)
-department_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28)
+department_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 ,textvariable=department)
 department_entry.grid(row=5,column=1,padx=10,pady=8)
 
 semester_label = tk.Label(detail_frame,text="Semester",font=("Arial",10),width=13)
 semester_label.grid(row=6,column=0,padx=10,pady=8)
-semester_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28)
+semester_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 ,textvariable=semester)
 semester_entry.grid(row=6,column=1,padx=10,pady=8)
 
 sec_label = tk.Label(detail_frame,text="Section",font=("Arial",10),width=13)
 sec_label.grid(row=7,column=0,padx=10,pady=8)
-sec_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28)
+sec_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 ,textvariable=section)
 sec_entry.grid(row=7,column=1,padx=10,pady=8)
 
 # for button frame 
@@ -106,4 +116,34 @@ allData_btn.grid(row=0,column=3,padx=1,pady=1)
 data_view = tk.Frame(data_frame,bg="lightgray",bd=10 , relief=tk.GROOVE)
 data_view.pack(fill=tk.BOTH,expand=True)
 
+y_scroll = tk.Scrollbar(data_view,orient=tk.VERTICAL)
+x_scroll = tk.Scrollbar(data_view,orient=tk.HORIZONTAL)
+
+student_data = ttk.Treeview(data_view,columns=("Roll No","Name","Father Name","Gender","Email","Department","Semester","Section") , yscrollcommand=y_scroll.set , xscrollcommand=x_scroll.set)
+student_data.heading("Roll No",text="Roll No")
+student_data.heading("Name",text="Name")
+student_data.heading("Father Name",text="Father Name")
+student_data.heading("Email",text="Email")
+student_data.heading("Gender",text="Gender")
+student_data.heading("Department",text="Department")
+student_data.heading("Semester",text="Semester")
+student_data.heading("Section",text="Section")
+
+student_data.column("Roll No" , width=50)
+student_data.column("Name" , width=100)
+student_data.column("Father Name" , width=100)
+student_data.column("Email" , width=130)
+student_data.column("Gender" , width=50)
+student_data.column("Department" , width=100)
+student_data.column("Semester" , width=50)
+student_data.column("Section" , width=50)
+
+student_data["show"] = "headings"
+
+y_scroll.config(command=student_data.yview)
+x_scroll.config(command=student_data.xview)
+y_scroll.pack(side=tk.RIGHT,fill=tk.Y)
+x_scroll.pack(side=tk.BOTTOM,fill=tk.X)
+
+student_data.pack(fill=tk.BOTH,expand=True)
 win.mainloop()
