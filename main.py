@@ -49,7 +49,7 @@ name_entry.grid(row=1,column=1,padx=10,pady=8)
 
 fathername_label = tk.Label(detail_frame,text="Father Name",font=("Arial",10),width=13)
 fathername_label.grid(row=2,column=0,padx=10,pady=8)
-fathername_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , textvariable=fathername)
+fathername_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28,  textvariable=fathername)
 fathername_entry.grid(row=2,column=1,padx=10,pady=8)
 
 gender_label = tk.Label(detail_frame,text="Gender",font=("Arial",10),width=13)
