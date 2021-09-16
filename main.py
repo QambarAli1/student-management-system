@@ -8,15 +8,6 @@ from typing import Text
 win = tk.Tk()
 win.geometry("1200x600")
 win.title("Student Mangement SYstem")
-config = {
-  "apiKey": "AIzaSyB0nCDu482FaIn5Gz4qblrtB7uVlqBIiD8",
-  "authDomain": "sudo-app-react.firebaseapp.com",
-  'databaseURL': "https://sudo-app-react-default-rtdb.firebaseio.com",
-  "projectId": "sudo-app-react",
-  "storageBucket": "sudo-app-react.appspot.com",
-  "messagingSenderId": "155355720448",
-  "appId": "1:155355720448:web:44dd50f736a6401d18e1e5"
-}
 
 
 # for title
@@ -24,12 +15,12 @@ config = {
 title_label = tk.Label(win,text="Student Management System",font=("Ariel",25,BOLD),border=12,relief=tk.GROOVE,foreground="yellow",bg="blue")
 title_label.pack(side=tk.TOP,fill=tk.X)
 
-# for details frame 
+# for details frame
 
 detail_frame = tk.LabelFrame(win,text="Details",font=("Arial",20,BOLD),bd=12,relief=tk.GROOVE)
 detail_frame.place(x=20,y=80,width=420,height=500)
 
-# for data frame 
+# for data frame
 
 data_frame = tk.LabelFrame(win,text="Data",font=("Arial",20,BOLD),bd=12,relief=tk.GROOVE)
 data_frame.place(x=470,y=80,width=700,height=500)
@@ -46,7 +37,7 @@ section = tk.StringVar()
 search = tk.StringVar()
 
 
-# for input fields 
+# for input fields
 
 rollno_label = tk.Label(detail_frame,text="Roll No",font=("Arial",10),width=13)
 rollno_label.grid(row=0,column=0,padx=10,pady=8)
@@ -89,7 +80,7 @@ sec_label.grid(row=7,column=0,padx=10,pady=8)
 sec_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 ,textvariable=section)
 sec_entry.grid(row=7,column=1,padx=10,pady=8)
 
-# for button frame 
+# for button frame
 
 btn_frame = tk.Frame(detail_frame,relief=tk.GROOVE)
 btn_frame.place(x=15,y=380,width=350,height=50)
@@ -107,9 +98,9 @@ clear_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Clear",bd=5,font=("Arial",
 clear_btn.grid(row=0,column=3,padx=2,pady=2)
 
 
-#  for search frame 
+#  for search frame
 search_frame = tk.Frame(data_frame,bd=6,relief=tk.GROOVE)
-search_frame.pack(side=tk.TOP,fill=tk.X) 
+search_frame.pack(side=tk.TOP,fill=tk.X)
 
 search_label = tk.Label(search_frame,text="Search",font=("Arial",12,BOLD),width=8)
 search_label.grid(row=0,column=0,padx=5,pady=5)
@@ -122,7 +113,7 @@ search_btn.grid(row=0,column=2,padx=1,pady=1)
 allData_btn = tk.Button(search_frame,text="All Students" , bd = 5 ,font=("Arial",12,BOLD),width=10)
 allData_btn.grid(row=0,column=3,padx=1,pady=1)
 
-# for data view frame 
+# for data view frame
 
 data_view = tk.Frame(data_frame,bg="lightgray",bd=10 , relief=tk.GROOVE)
 data_view.pack(fill=tk.BOTH,expand=True)
