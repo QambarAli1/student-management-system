@@ -8,6 +8,16 @@ from typing import Text
 win = tk.Tk()
 win.geometry("1200x600")
 win.title("Student Mangement SYstem")
+config = {
+  "apiKey": "AIzaSyB0nCDu482FaIn5Gz4qblrtB7uVlqBIiD8",
+  "authDomain": "sudo-app-react.firebaseapp.com",
+  'databaseURL': "https://sudo-app-react-default-rtdb.firebaseio.com",
+  "projectId": "sudo-app-react",
+  "storageBucket": "sudo-app-react.appspot.com",
+  "messagingSenderId": "155355720448",
+  "appId": "1:155355720448:web:44dd50f736a6401d18e1e5"
+}
+
 
 # for title
 
@@ -33,6 +43,7 @@ email = tk.StringVar()
 department= tk.StringVar()
 semester = tk.StringVar()
 section = tk.StringVar()
+search = tk.StringVar()
 
 
 # for input fields 
@@ -102,7 +113,7 @@ search_frame.pack(side=tk.TOP,fill=tk.X)
 
 search_label = tk.Label(search_frame,text="Search",font=("Arial",12,BOLD),width=8)
 search_label.grid(row=0,column=0,padx=5,pady=5)
-search_by = ttk.Combobox(search_frame,font=("Arial",10) , state="readonly")
+search_by = ttk.Combobox(search_frame,font=("Arial",10) , state="readonly" , textvariable=search)
 search_by["values"] = ("Roll No","Name","Father Name","Email")
 search_by.grid(row=0,column=1,padx=1,pady=1)
 search_btn = tk.Button(search_frame,text="Search", bd = 5, font=("Arial",12,BOLD),width=8)
