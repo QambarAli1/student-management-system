@@ -1,14 +1,45 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import font
-from tkinter.constants import GROOVE, RIGHT
 from tkinter.font import BOLD
-from typing import Text
+import pyrebase
 
 win = tk.Tk()
 win.geometry("1200x600")
 win.title("Student Mangement SYstem")
 
+config = {
+  "apiKey": "AIzaSyB0nCDu482FaIn5Gz4qblrtB7uVlqBIiD8",
+  "authDomain": "sudo-app-react.firebaseapp.com",
+  "databaseURL": "https://sudo-app-react-default-rtdb.firebaseio.com",
+  "projectId": "sudo-app-react",
+  "storageBucket": "sudo-app-react.appspot.com",
+  "messagingSenderId": "155355720448",
+  "appId": "1:155355720448:web:44dd50f736a6401d18e1e5"
+}
+
+firebase = pyrebase.initialize_app(config)
+db = firebase.database()
+std = db.child("students").get()
+print(std.val())
+
+#function getting bio
+def getbio():
+  rollno=rollno_entry.get()
+  print(rollno)
+  name = name_entry.get()
+  print(name)
+  fathername=fathername_entry.get()
+  print(fathername)
+  gender=gender_entry.get()
+  print(gender)
+  email = email_entry.get()
+  print(email)
+  department = department_entry.get()
+  print(department)
+  semester = semester_entry.get()
+  print(semester)
+  sec = sec_entry.get()
+  print(sec)
 
 # for title
 
@@ -85,7 +116,7 @@ sec_entry.grid(row=7,column=1,padx=10,pady=8)
 btn_frame = tk.Frame(detail_frame,relief=tk.GROOVE)
 btn_frame.place(x=15,y=380,width=350,height=50)
 
-add_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Add",bd=5,font=("Arial",10),width=8)
+add_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Add",bd=5,font=("Arial",10),width=8, command=getbio)
 add_btn.grid(row=0,column=0,padx=2,pady=2)
 
 update_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Update",bd=5,font=("Arial",10),width=8)
