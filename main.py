@@ -19,27 +19,44 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
-std = db.child("students").get()
-print(std.val())
+#std = db.child("students").get()
+#print(std.val())
 
-#function getting bio
+
+
+#function sending bio
 def getbio():
-  rollno=rollno_entry.get()
-  print(rollno)
-  name = name_entry.get()
-  print(name)
-  fathername=fathername_entry.get()
-  print(fathername)
-  gender=gender_entry.get()
-  print(gender)
-  email = email_entry.get()
-  print(email)
-  department = department_entry.get()
-  print(department)
-  semester = semester_entry.get()
-  print(semester)
-  sec = sec_entry.get()
-  print(sec)
+  Entries = {"rollno" : rollno_entry.get(),
+             "name" : name_entry.get(),
+             "fathername" : fathername_entry.get(),
+             "gender" : gender_entry.get(),
+             "email" : email_entry.get(),
+             "department" : department_entry.get(),
+             "semester" : semester_entry.get(),
+             "sec" : sec_entry.get() }
+  flag = True
+  for x in Entries:
+    if len(x)==0:
+      flag= False
+  if flag==True:
+    print(Entries)
+    db.child('students').push(Entries)
+  if flag==False:
+    print('Fill Entries')
+
+
+#func getting all stds
+
+def allStd():
+    allStudents = db.child("students").get().val()
+    #print('all Std',allStudents) #read biodata of std from database
+    for x in allStudents:
+        #print('std',x)  #prints keys
+        geteachstd = db.child("students").child(x).get().val()
+        print(geteachstd) #print whole dict
+        print(geteachstd["name"]) #prints name
+    #print(allStudents['name'])  #read name from dict
+
 
 # for title
 
@@ -141,7 +158,7 @@ search_by.grid(row=0,column=1,padx=1,pady=1)
 search_btn = tk.Button(search_frame,text="Search", bd = 5, font=("Arial",12,BOLD),width=8)
 search_btn.grid(row=0,column=2,padx=1,pady=1)
 
-allData_btn = tk.Button(search_frame,text="All Students" , bd = 5 ,font=("Arial",12,BOLD),width=10)
+allData_btn = tk.Button(search_frame,text="All Students" , bd = 5 ,font=("Arial",12,BOLD),width=10,command=allStd)
 allData_btn.grid(row=0,column=3,padx=1,pady=1)
 
 # for data view frame
@@ -162,6 +179,7 @@ student_data.heading("Department",text="Department")
 student_data.heading("Semester",text="Semester")
 student_data.heading("Section",text="Section")
 
+
 student_data.column("Roll No" , width=50)
 student_data.column("Name" , width=100)
 student_data.column("Father Name" , width=100)
@@ -171,7 +189,13 @@ student_data.column("Department" , width=100)
 student_data.column("Semester" , width=50)
 student_data.column("Section" , width=50)
 
-student_data["show"] = "headings"
+rollnoInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["rollno"]
+student_data.insert('',tk.END,value=rollnoInsert)
+nameInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["name"]
+student_data.insert('',tk.END,value=nameInsert)
+fathernameInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["fathername"]
+student_data.insert('',tk.END,value=fathernameInsert)
+
 
 y_scroll.config(command=student_data.yview)
 x_scroll.config(command=student_data.xview)
