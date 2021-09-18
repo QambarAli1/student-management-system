@@ -177,11 +177,13 @@ student_data.heading("Section",text="Section")
 student_data.column("Roll No" , width=50)
 student_data.column("Name" , width=100)
 student_data.column("Father Name" , width=100)
-student_data.column("Email" , width=130)
+student_data.column("Email" , width=100)
 student_data.column("Gender" , width=50)
-student_data.column("Department" , width=100)
+student_data.column("Department" , width=80)
 student_data.column("Semester" , width=50)
 student_data.column("Section" , width=50)
+student_data["show"] = "headings"
+
 
 rollnoInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["rollno"]
 nameInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["name"]
@@ -191,6 +193,15 @@ emailInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["em
 departmentInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["department"]
 semesterInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["semester"]
 secInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["sec"]
+
+student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
+student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
+student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
+student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
+student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
+student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
+student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
+student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
 student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
 
 
