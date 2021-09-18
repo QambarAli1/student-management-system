@@ -22,11 +22,10 @@ db = firebase.database()
 #std = db.child("students").get()
 #print(std.val())
 
-
-
 #function sending bio
-def getbio():
-  Entries = {"rollno" : rollno_entry.get(),
+def addStd():
+  Entries=[rollno_entry.get(),name_entry.get(),fathername_entry.get(),gender_entry.get(),email_entry.get(),department_entry.get(),semester_entry.get(),sec_entry.get()]
+  biodata = {"rollno" : rollno_entry.get(),
              "name" : name_entry.get(),
              "fathername" : fathername_entry.get(),
              "gender" : gender_entry.get(),
@@ -36,14 +35,13 @@ def getbio():
              "sec" : sec_entry.get() }
   flag = True
   for x in Entries:
-    if len(x)==0:
-      flag= False
-  if flag==True:
-    print(Entries)
-    db.child('students').push(Entries)
-  if flag==False:
-    print('Fill Entries')
-
+      if len(x) == 0:
+          flag = False
+  if flag == True:
+      print(Entries)
+      db.child('students').push(biodata)
+  if flag == False:
+      print('Fill Entries')
 
 #func getting all stds
 
@@ -56,7 +54,6 @@ def allStd():
         print(geteachstd) #print whole dict
         print(geteachstd["name"]) #prints name
     #print(allStudents['name'])  #read name from dict
-
 
 # for title
 
@@ -83,7 +80,6 @@ department= tk.StringVar()
 semester = tk.StringVar()
 section = tk.StringVar()
 search = tk.StringVar()
-
 
 # for input fields
 
@@ -133,7 +129,7 @@ sec_entry.grid(row=7,column=1,padx=10,pady=8)
 btn_frame = tk.Frame(detail_frame,relief=tk.GROOVE)
 btn_frame.place(x=15,y=380,width=350,height=50)
 
-add_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Add",bd=5,font=("Arial",10),width=8, command=getbio)
+add_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Add",bd=5,font=("Arial",10),width=8, command=addStd)
 add_btn.grid(row=0,column=0,padx=2,pady=2)
 
 update_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Update",bd=5,font=("Arial",10),width=8)
@@ -144,7 +140,6 @@ delete_btn.grid(row=0,column=2,padx=2,pady=2)
 
 clear_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Clear",bd=5,font=("Arial",10),width=8)
 clear_btn.grid(row=0,column=3,padx=2,pady=2)
-
 
 #  for search frame
 search_frame = tk.Frame(data_frame,bd=6,relief=tk.GROOVE)
@@ -179,7 +174,6 @@ student_data.heading("Department",text="Department")
 student_data.heading("Semester",text="Semester")
 student_data.heading("Section",text="Section")
 
-
 student_data.column("Roll No" , width=50)
 student_data.column("Name" , width=100)
 student_data.column("Father Name" , width=100)
@@ -190,11 +184,14 @@ student_data.column("Semester" , width=50)
 student_data.column("Section" , width=50)
 
 rollnoInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["rollno"]
-student_data.insert('',tk.END,value=rollnoInsert)
 nameInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["name"]
-student_data.insert('',tk.END,value=nameInsert)
 fathernameInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["fathername"]
-student_data.insert('',tk.END,value=fathernameInsert)
+genderInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["gender"]
+emailInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["email"]
+departmentInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["department"]
+semesterInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["semester"]
+secInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["sec"]
+student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
 
 
 y_scroll.config(command=student_data.yview)
