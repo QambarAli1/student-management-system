@@ -45,15 +45,6 @@ def addStd():
 
 #func getting all stds
 
-def allStd():
-    allStudents = db.child("students").get().val()
-    #print('all Std',allStudents) #read biodata of std from database
-    for x in allStudents:
-        #print('std',x)  #prints keys
-        geteachstd = db.child("students").child(x).get().val()
-        print(geteachstd) #print whole dict
-        print(geteachstd["name"]) #prints name
-    #print(allStudents['name'])  #read name from dict
 
 # for title
 
@@ -153,7 +144,7 @@ search_by.grid(row=0,column=1,padx=1,pady=1)
 search_btn = tk.Button(search_frame,text="Search", bd = 5, font=("Arial",12,BOLD),width=8)
 search_btn.grid(row=0,column=2,padx=1,pady=1)
 
-allData_btn = tk.Button(search_frame,text="All Students" , bd = 5 ,font=("Arial",12,BOLD),width=10,command=allStd)
+allData_btn = tk.Button(search_frame,text="All Students" , bd = 5 ,font=("Arial",12,BOLD),width=10)
 allData_btn.grid(row=0,column=3,padx=1,pady=1)
 
 # for data view frame
@@ -185,24 +176,22 @@ student_data.column("Section" , width=50)
 student_data["show"] = "headings"
 
 
-rollnoInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["rollno"]
-nameInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["name"]
-fathernameInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["fathername"]
-genderInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["gender"]
-emailInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["email"]
-departmentInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["department"]
-semesterInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["semester"]
-secInsert = db.child("students").child("-MjoikRP-AaiDkOSqJGk").get().val()["sec"]
+#show all students data
+allkeys = db.child("students").get().val()
+for key in allkeys:
+    print('keys' , key)
+    rollnoInsert = db.child("students").child(key).get().val()["rollno"]
+    nameInsert = db.child("students").child(key).get().val()["name"]
+    fathernameInsert = db.child("students").child(key).get().val()["fathername"]
+    genderInsert = db.child("students").child(key).get().val()["gender"]
+    emailInsert = db.child("students").child(key).get().val()["email"]
+    departmentInsert = db.child("students").child(key).get().val()["department"]
+    semesterInsert = db.child("students").child(key).get().val()["semester"]
+    secInsert = db.child("students").child(key).get().val()["sec"]
+    student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
 
-student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
-student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
-student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
-student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
-student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
-student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
-student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
-student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
-student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
+
+
 
 
 y_scroll.config(command=student_data.yview)
