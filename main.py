@@ -40,10 +40,21 @@ def addStd():
   if flag == True:
       print(Entries)
       db.child('students').push(biodata)
+      clearEntries()
   if flag == False:
       print('Fill Entries')
 
-#func getting all stds
+
+def clearEntries():
+    rollno_entry.delete(0, 'end')
+    name_entry.delete(0, 'end')
+    gender_entry.delete(0, 'end')
+    fathername_entry.delete(0, 'end')
+    gender_entry.delete(0, 'end')
+    email_entry.delete(0, 'end')
+    department_entry.delete(0, 'end')
+    semester_entry.delete(0, 'end')
+    sec_entry.delete(0, 'end')
 
 
 # for title
@@ -129,7 +140,7 @@ update_btn.grid(row=0,column=1,padx=2,pady=2)
 delete_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Delete",bd=5,font=("Arial",10),width=8)
 delete_btn.grid(row=0,column=2,padx=2,pady=2)
 
-clear_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Clear",bd=5,font=("Arial",10),width=8)
+clear_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Clear",bd=5,font=("Arial",10),width=8,command=clearEntries)
 clear_btn.grid(row=0,column=3,padx=2,pady=2)
 
 #  for search frame
@@ -177,22 +188,25 @@ student_data["show"] = "headings"
 
 
 #show all students data
-allkeys = db.child("students").get().val()
-for key in allkeys:
-    print('keys' , key)
-    rollnoInsert = db.child("students").child(key).get().val()["rollno"]
-    nameInsert = db.child("students").child(key).get().val()["name"]
-    fathernameInsert = db.child("students").child(key).get().val()["fathername"]
-    genderInsert = db.child("students").child(key).get().val()["gender"]
-    emailInsert = db.child("students").child(key).get().val()["email"]
-    departmentInsert = db.child("students").child(key).get().val()["department"]
-    semesterInsert = db.child("students").child(key).get().val()["semester"]
-    secInsert = db.child("students").child(key).get().val()["sec"]
-    student_data.insert('','end',value=(rollnoInsert,nameInsert,fathernameInsert,genderInsert,emailInsert,departmentInsert,semesterInsert,secInsert) )
+
+def allStd():
+    allkeys = db.child("students").get().val()
+    for key in allkeys:
+        print('keys', key)
+        rollnoInsert = db.child("students").child(key).get().val()["rollno"]
+        nameInsert = db.child("students").child(key).get().val()["name"]
+        fathernameInsert = db.child("students").child(key).get().val()["fathername"]
+        genderInsert = db.child("students").child(key).get().val()["gender"]
+        emailInsert = db.child("students").child(key).get().val()["email"]
+        departmentInsert = db.child("students").child(key).get().val()["department"]
+        semesterInsert = db.child("students").child(key).get().val()["semester"]
+        secInsert = db.child("students").child(key).get().val()["sec"]
+        student_data.insert('', 'end', value=(
+        rollnoInsert, nameInsert, fathernameInsert, genderInsert, emailInsert, departmentInsert, semesterInsert,
+        secInsert))
 
 
-
-
+allStd()
 
 y_scroll.config(command=student_data.yview)
 x_scroll.config(command=student_data.xview)
