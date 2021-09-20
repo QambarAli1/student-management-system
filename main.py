@@ -6,7 +6,7 @@ from tkinter import messagebox
 
 win = tk.Tk()
 win.geometry("1340x700")
-win.title("Student Mangement SYstem")
+win.title("Student Mangement System by Qambar Ali and Aman Khan")
 
 config = {
   "apiKey": "AIzaSyB0nCDu482FaIn5Gz4qblrtB7uVlqBIiD8",
@@ -20,10 +20,12 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
-#std = db.child("students").get()
-#print(std.val())
 
-#function sending bio
+allKeys = db.child("students").get().val()
+print(allKeys)
+
+#function adding new students
+
 def addStd():
   Entries=[rollno_entry.get(),name_entry.get(),fathername_entry.get(),gender_entry.get(),email_entry.get(),department_entry.get(),semester_entry.get(),sec_entry.get()]
   biodata = {"rollno" : rollno_entry.get(),
@@ -34,19 +36,36 @@ def addStd():
              "department" : department_entry.get(),
              "semester" : semester_entry.get(),
              "sec" : sec_entry.get() }
+
   flag = True
+  uniqueRollno = True
   for x in Entries:
       if len(x) == 0:
           flag = False
-  if flag == True:
-      print(Entries)
-      db.child('students').push(biodata)
-      clearEntries()
+  allKeys = db.child("students").get().val()
+  if allKeys!=None:
+      for keys in allKeys:
+          if db.child("students").child(keys).get().val()['rollno'] == rollno_entry.get():
+              uniqueRollno = False
   if flag == False:
       messagebox.showwarning("warning", "Fill Entries")
       print('Fill Entries')
-      #messagebox.showerror("error", "try again")
-      #messagebox.showinfo("my message", "this is an example of showinfo\nmessagebox")
+  if allKeys==None and flag==True:
+      print(Entries)
+      db.child('students').push(biodata)
+      clearEntries()
+      clearTreeview()
+      allStd()
+      messagebox.showinfo("Added", "Student Added Successfully !")
+  if uniqueRollno==False:
+      messagebox.showinfo("Duplicated", "Roll No Must be Unique !")
+  if allKeys != None and uniqueRollno==True:
+      print(Entries)
+      db.child('students').push(biodata)
+      clearEntries()
+      clearTreeview()
+      allStd()
+      messagebox.showinfo("Added", "Student Added Successfully !")
 
 
 def clearEntries():
@@ -54,7 +73,7 @@ def clearEntries():
     name_entry.delete(0, 'end')
     gender_entry.delete(0, 'end')
     fathername_entry.delete(0, 'end')
-    gender_entry.delete(0, 'end')
+    gender_entry.set('')
     email_entry.delete(0, 'end')
     department_entry.delete(0, 'end')
     semester_entry.delete(0, 'end')
@@ -77,6 +96,7 @@ data_frame = tk.LabelFrame(win,text="Data",font=("Arial",20,BOLD),bd=12,relief=t
 data_frame.place(x=470,y=80,width=850,height=550)
 
 #*****Inp Variables *****
+
 rollno = tk.StringVar()
 name = tk.StringVar()
 fathername = tk.StringVar()
@@ -88,11 +108,12 @@ section = tk.StringVar()
 search = tk.StringVar()
 note = tk.StringVar()
 
+
 # for input fields
 
 rollno_label = tk.Label(detail_frame,text="Roll No",font=("Arial",10),width=13)
 rollno_label.grid(row=0,column=0,padx=10,pady=8)
-rollno_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 ,textvariable=rollno)
+rollno_entry = tk.Entry(detail_frame , bd=7,font=("Arial",10) , width=28 ,textvariable=rollno)
 rollno_entry.grid(row=0,column=1,padx=10,pady=8)
 
 name_label = tk.Label(detail_frame,text="Name",font=("Arial",10),width=13)
@@ -132,6 +153,40 @@ sec_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 ,textvariabl
 sec_entry.grid(row=7,column=1,padx=10,pady=8)
 
 
+#update record
+
+def updateStd():
+    updateRollno = rollno_entry.get()
+    allKeys = db.child("students").get().val()
+    for keys in allKeys:
+        print(keys)
+        if db.child("students").child(keys).get().val()['rollno']==updateRollno:
+            db.child("students").child(keys).update({'name':name_entry.get()})
+            db.child("students").child(keys).update({'fathername':fathername_entry.get()})
+            db.child("students").child(keys).update({'email':email_entry.get()})
+            db.child("students").child(keys).update({'gender':gender_entry.get()})
+            db.child("students").child(keys).update({'department':department_entry.get()})
+            db.child("students").child(keys).update({'semester':semester_entry.get()})
+            db.child("students").child(keys).update({'sec':sec_entry.get()})
+            messagebox.showinfo("Updated", "Updated Successfully !")
+    clearEntries()
+    clearTreeview()
+    allStd()
+
+#delete record
+
+def deleteStd():
+    deleteRollno = rollno_entry.get()
+    allKeys = db.child("students").get().val()
+    for keys in allKeys:
+        print(keys)
+        if db.child("students").child(keys).get().val()['rollno']==deleteRollno:
+            db.child("students").child(keys).remove()
+            messagebox.showinfo("Deleted", "Deleted Successfully !")
+    clearEntries()
+    clearTreeview()
+    allStd()
+
 
 # for button frame
 
@@ -141,10 +196,10 @@ btn_frame.place(x=15,y=420,width=350,height=50)
 add_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Add",bd=5,font=("Arial",10),width=8, command=addStd)
 add_btn.grid(row=0,column=0,padx=2,pady=2)
 
-update_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Update",bd=5,font=("Arial",10),width=8)
+update_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Update",bd=5,font=("Arial",10),width=8,command=updateStd)
 update_btn.grid(row=0,column=1,padx=2,pady=2)
 
-delete_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Delete",bd=5,font=("Arial",10),width=8)
+delete_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Delete",bd=5,font=("Arial",10),width=8,command=deleteStd)
 delete_btn.grid(row=0,column=2,padx=2,pady=2)
 
 clear_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Clear",bd=5,font=("Arial",10),width=8,command=clearEntries)
@@ -154,28 +209,69 @@ clear_btn.grid(row=0,column=3,padx=2,pady=2)
 search_frame = tk.Frame(data_frame,bd=6,relief=tk.GROOVE)
 search_frame.pack(side=tk.TOP,fill=tk.X)
 
-search_label = tk.Label(search_frame,text="Search",font=("Arial",12,BOLD),width=8)
+search_label = tk.Label(search_frame,text="Search by Roll No",font=("Arial",12,BOLD),width=30)
 search_label.grid(row=0,column=0,padx=5,pady=5)
-search_by = ttk.Combobox(search_frame,font=("Arial",10) , state="readonly" , textvariable=search)
-search_by["values"] = ("Roll No","Name","Email")
-search_by.grid(row=0,column=2,padx=1,pady=1)
+
 
 search_entry = tk.Entry(search_frame,bd=2,font=("Arial",10) , width=28)
 search_entry.grid(row=0,column=1,padx=1,pady=1)
 
-def searchStd():
-    print('update text')
 
+#clear students table
+
+def clearTreeview():
+    x = student_data.get_children()
+    for items in x:
+        student_data.delete(items)
+
+#search for student with roll no
+
+def searchStd():
+    allkeys = db.child("students").get().val()
+    searchrollno = search_entry.get()
+    flag = False
+    if allkeys!=None:
+        for key in allkeys:
+            # print('keys', key)
+            # rollnoInsert = db.child("students").child(key).get().val()["rollno"]
+            stdrollno = db.child("students").child(key).get().val()["rollno"]
+            if searchrollno == db.child("students").child(key).get().val()["rollno"]:
+                # student_data.insert('','end',value='')
+                flag = True
+                clearTreeview()
+                # print('found at ',key)
+                # print('Record Found')
+                rollno.set(db.child("students").child(key).get().val()["rollno"])
+                name.set(db.child("students").child(key).get().val()["name"])
+                fathername.set(db.child("students").child(key).get().val()["fathername"])
+                email.set(db.child("students").child(key).get().val()["email"])
+                gender.set(db.child("students").child(key).get().val()["gender"])
+                department.set(db.child("students").child(key).get().val()["department"])
+                semester.set(db.child("students").child(key).get().val()["semester"])
+                section.set(db.child("students").child(key).get().val()["sec"])
+                student_data.insert('', 'end', value=(
+                    db.child("students").child(key).get().val()["rollno"],
+                    db.child("students").child(key).get().val()["name"],
+                    db.child("students").child(key).get().val()["fathername"],
+                    db.child("students").child(key).get().val()["gender"],
+                    db.child("students").child(key).get().val()["email"],
+                    db.child("students").child(key).get().val()["department"],
+                    db.child("students").child(key).get().val()["semester"],
+                    db.child("students").child(key).get().val()["sec"]
+                ))
+    if flag==True:
+        print('Found')
+    if flag == False:
+        print('Not found')
+        messagebox.showinfo("404", "No record found !")
 
 
 search_btn = tk.Button(search_frame,text="Search", bd = 5, font=("Arial",12,BOLD),width=8,command=searchStd)
 search_btn.grid(row=0,column=3,padx=1,pady=1)
 
 
-#allData_btn = tk.Button(search_frame,text="All Students" , bd = 5 ,font=("Arial",12,BOLD),width=10)
-#allData_btn.grid(row=0,column=3,padx=1,pady=1)
+# for data view frame to show all students in table
 
-# for data view frame
 
 data_view = tk.Frame(data_frame,bg="lightgray",bd=10 , relief=tk.GROOVE)
 data_view.pack(fill=tk.BOTH,expand=True)
@@ -208,22 +304,25 @@ student_data["show"] = "headings"
 
 def allStd():
     allkeys = db.child("students").get().val()
-    for key in allkeys:
-        print('keys', key)
-        rollnoInsert = db.child("students").child(key).get().val()["rollno"]
-        nameInsert = db.child("students").child(key).get().val()["name"]
-        fathernameInsert = db.child("students").child(key).get().val()["fathername"]
-        genderInsert = db.child("students").child(key).get().val()["gender"]
-        emailInsert = db.child("students").child(key).get().val()["email"]
-        departmentInsert = db.child("students").child(key).get().val()["department"]
-        semesterInsert = db.child("students").child(key).get().val()["semester"]
-        secInsert = db.child("students").child(key).get().val()["sec"]
-        student_data.insert('', 'end', value=(
-        rollnoInsert, nameInsert, fathernameInsert, genderInsert, emailInsert, departmentInsert, semesterInsert,
-        secInsert))
+    if allkeys!=None:
+        student_data.insert('', 'end', value='')
+        for key in allkeys:
+            print('keys', key)
+            rollnoInsert = db.child("students").child(key).get().val()["rollno"]
+            nameInsert = db.child("students").child(key).get().val()["name"]
+            fathernameInsert = db.child("students").child(key).get().val()["fathername"]
+            genderInsert = db.child("students").child(key).get().val()["gender"]
+            emailInsert = db.child("students").child(key).get().val()["email"]
+            departmentInsert = db.child("students").child(key).get().val()["department"]
+            semesterInsert = db.child("students").child(key).get().val()["semester"]
+            secInsert = db.child("students").child(key).get().val()["sec"]
+            student_data.insert('', 'end', value=(
+            rollnoInsert, nameInsert, fathernameInsert, genderInsert, emailInsert, departmentInsert, semesterInsert,
+            secInsert))
+    else:
+        print('No records found')
 
-
-
+allStd()
 y_scroll.config(command=student_data.yview)
 x_scroll.config(command=student_data.xview)
 y_scroll.pack(side=tk.RIGHT,fill=tk.Y)
