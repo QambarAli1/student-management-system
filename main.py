@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.font import BOLD
 import pyrebase
+from tkinter import messagebox
 
 win = tk.Tk()
-win.geometry("1200x600")
+win.geometry("1340x700")
 win.title("Student Mangement SYstem")
 
 config = {
@@ -42,7 +43,10 @@ def addStd():
       db.child('students').push(biodata)
       clearEntries()
   if flag == False:
+      messagebox.showwarning("warning", "Fill Entries")
       print('Fill Entries')
+      #messagebox.showerror("error", "try again")
+      #messagebox.showinfo("my message", "this is an example of showinfo\nmessagebox")
 
 
 def clearEntries():
@@ -65,12 +69,12 @@ title_label.pack(side=tk.TOP,fill=tk.X)
 # for details frame
 
 detail_frame = tk.LabelFrame(win,text="Details",font=("Arial",20,BOLD),bd=12,relief=tk.GROOVE)
-detail_frame.place(x=20,y=80,width=420,height=500)
+detail_frame.place(x=20,y=80,width=420,height=550)
 
 # for data frame
 
 data_frame = tk.LabelFrame(win,text="Data",font=("Arial",20,BOLD),bd=12,relief=tk.GROOVE)
-data_frame.place(x=470,y=80,width=700,height=500)
+data_frame.place(x=470,y=80,width=850,height=550)
 
 #*****Inp Variables *****
 rollno = tk.StringVar()
@@ -82,6 +86,7 @@ department= tk.StringVar()
 semester = tk.StringVar()
 section = tk.StringVar()
 search = tk.StringVar()
+note = tk.StringVar()
 
 # for input fields
 
@@ -126,10 +131,12 @@ sec_label.grid(row=7,column=0,padx=10,pady=8)
 sec_entry = tk.Entry(detail_frame,bd=7,font=("Arial",10) , width=28 ,textvariable=section)
 sec_entry.grid(row=7,column=1,padx=10,pady=8)
 
+
+
 # for button frame
 
 btn_frame = tk.Frame(detail_frame,relief=tk.GROOVE)
-btn_frame.place(x=15,y=380,width=350,height=50)
+btn_frame.place(x=15,y=420,width=350,height=50)
 
 add_btn = tk.Button(btn_frame,bg="lightgrey" ,text="Add",bd=5,font=("Arial",10),width=8, command=addStd)
 add_btn.grid(row=0,column=0,padx=2,pady=2)
@@ -150,13 +157,23 @@ search_frame.pack(side=tk.TOP,fill=tk.X)
 search_label = tk.Label(search_frame,text="Search",font=("Arial",12,BOLD),width=8)
 search_label.grid(row=0,column=0,padx=5,pady=5)
 search_by = ttk.Combobox(search_frame,font=("Arial",10) , state="readonly" , textvariable=search)
-search_by["values"] = ("Roll No","Name","Father Name","Email")
-search_by.grid(row=0,column=1,padx=1,pady=1)
-search_btn = tk.Button(search_frame,text="Search", bd = 5, font=("Arial",12,BOLD),width=8)
-search_btn.grid(row=0,column=2,padx=1,pady=1)
+search_by["values"] = ("Roll No","Name","Email")
+search_by.grid(row=0,column=2,padx=1,pady=1)
 
-allData_btn = tk.Button(search_frame,text="All Students" , bd = 5 ,font=("Arial",12,BOLD),width=10)
-allData_btn.grid(row=0,column=3,padx=1,pady=1)
+search_entry = tk.Entry(search_frame,bd=2,font=("Arial",10) , width=28)
+search_entry.grid(row=0,column=1,padx=1,pady=1)
+
+def searchStd():
+    print('update text')
+
+
+
+search_btn = tk.Button(search_frame,text="Search", bd = 5, font=("Arial",12,BOLD),width=8,command=searchStd)
+search_btn.grid(row=0,column=3,padx=1,pady=1)
+
+
+#allData_btn = tk.Button(search_frame,text="All Students" , bd = 5 ,font=("Arial",12,BOLD),width=10)
+#allData_btn.grid(row=0,column=3,padx=1,pady=1)
 
 # for data view frame
 
@@ -179,7 +196,7 @@ student_data.heading("Section",text="Section")
 student_data.column("Roll No" , width=50)
 student_data.column("Name" , width=100)
 student_data.column("Father Name" , width=100)
-student_data.column("Email" , width=100)
+student_data.column("Email" , width=130)
 student_data.column("Gender" , width=50)
 student_data.column("Department" , width=80)
 student_data.column("Semester" , width=50)
@@ -206,7 +223,6 @@ def allStd():
         secInsert))
 
 
-allStd()
 
 y_scroll.config(command=student_data.yview)
 x_scroll.config(command=student_data.xview)
